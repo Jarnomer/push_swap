@@ -23,6 +23,14 @@ Algorithm uses `turkey sort` where each number targets their `closest` smallest 
 
 Stacks are build as `doubly linked lists` to allow straight forward operation of `commands`.
 
+## 🛠️ Build
+
+GNU `make` and `gcc` are required to build and compile the project.
+
+```bash
+ARG=push_swap; git clone https://github.com/Jarnomer/push_swap.git $ARG && cd $ARG && make
+```
+
 ## ⚡ Usage
 
 `push_swap` excepts numbers in two ways. It prints the commands to `STDOUT`. Incorrect input results to `Error`.

@@ -25,7 +25,7 @@ Stacks are build as `doubly linked lists` to allow straight forward operation of
 
 ## ⚡ Usage
 
-`push_swap` can be run by giving it numbers in two ways. It prints the commands to `STDOUT`. Incorrect input results to `Error`.
+`push_swap` excepts numbers in two ways. It prints the commands to `STDOUT`. Incorrect input results to `Error`.
 
 ```bash
 ./push_swap 4 0 1 3 2
@@ -72,7 +72,7 @@ ARG="4 0 1 3 2"; ./push_swap $ARG | ./checker $ARG
 
 ## 📊 Commands
 
-Only following `commands` are allowed by the algorithm. Each time command is triggered, run the operation and print it to `STDOUT`.
+Only following `commands` are allowed by the algorithm.
 
 | Command | Description                                                      |
 |---------|-----------------------------------------------------------------------------|
@@ -87,6 +87,8 @@ Only following `commands` are allowed by the algorithm. Each time command is tri
 | rra     | Shift down all elements of stack a by 1, last becomes first. |
 | rrb     | Shift down all elements of stack b by 1, last becomes first. |
 | rrr     | Perform `rra` and `rrb` at the same time.        |
+
+Each time command is triggered, run the operation and print it to `STDOUT`.
 
 ```c
 void rra(t_stack **a, bool checker)

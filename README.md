@@ -1,5 +1,5 @@
 <h1 align="center">
-  push_swap
+  <b>push_swap</b>
 </h1>
 
 <p align="center">

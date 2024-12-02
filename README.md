@@ -1,6 +1,14 @@
-# push_swap
+<h1 align="center">
+  "push_swap"
+</h1>
 
-Sorting numbers using two stacks and turkey sort.
+<p align="center">
+	<b><i>Sorting numbers using two stacks and turkey sort.</i></b><br>
+</p>
+
+<p align="center">
+	<img src="https://img.shields.io/github/languages/code-size/Jarnomer/push_swap?style=for-the-badge&color=orange" alt="GitHub code size in bytes">
+</p>
 
 ## 📝 General
 

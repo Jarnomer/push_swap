@@ -7,6 +7,8 @@
 </p>
 
 <p align="center">
+  <img src="https://img.shields.io/badge/score-125%2F100-brightgreen" alt="score">
+  <img src="https://img.shields.io/badge/group-violet" alt="group"> 
 	<img src="https://img.shields.io/github/languages/code-size/Jarnomer/push_swap?style=for-the-badge&color=orange" alt="GitHub code size in bytes">
   <img src="https://img.shields.io/github/languages/top/Jarnomer/push_swap?style=for-the-badge&logo=c&label=%20&labelColor=gray&color=red" alt="GitHub top language">
 </p>
@@ -23,7 +25,7 @@ Stacks are build as `doubly linked lists` to allow straight forward operation of
 
 ## ⚡ Usage
 
-You can run `push_swap` by giving it numbers in two ways. It prints the commands to `STDOUT`. Incorrect input results to `Error`.
+`push_swap` can be run by giving it numbers in two ways. It prints the commands to `STDOUT`. Incorrect input results to `Error`.
 
 ```bash
 ./push_swap 4 0 1 3 2
@@ -43,7 +45,7 @@ pa
 ra
 ```
 
-`Checker` can be used the same way, then write commands to `STDIN` and finish input with `Crtl + D`. 
+`checker` can be used the same way, then write commands to `STDIN` and finish input with `Crtl + D`. 
 
 If stack was sorted correctly, `OK` is shown in `STDOUT` else writes `KO`. Incorrect command results into `Error`.
 
@@ -125,8 +127,8 @@ static void reverse(t_stack **s)
 
 ## 4️⃣2️⃣ Footer
 
-For other 42 project and general information, please refer the [landing page](https://github.com/Jarnomer/Hive42).
+For my other 42 project and general information, please refer the [landing page](https://github.com/Jarnomer/Hive42).
 
-I have also created error handling [unit testers](https://github.com/Jarnomer/Hive42) for `pipex`, `so_long` or `cub3d`.
+I have also created error handling [unit testers](https://github.com/Jarnomer/Hive42) for `pipex`, `so_long` and `cub3d`.
 
 ### Cheers and good luck! 🥳

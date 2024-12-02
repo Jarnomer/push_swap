@@ -103,13 +103,13 @@ vpath %.c $(SOURCEDIR)
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFTDIR)/$(LIBFTBIN) -o $(NAME)
+	$(CC) $(CFLAGS) $^ $(LIBFTDIR)/$(LIBFTBIN) -o $@
 	printf "$(V)$(B)Binary:$(T)$(Y) $(NAME) $(T)\n"
 
 bonus: $(BONUSFLAG)
 
 $(BONUSFLAG): $(OBJECTS_BONUS)
-	$(CC) $(CFLAGS) $(OBJECTS_BONUS) $(LIBFTDIR)/$(LIBFTBIN) -o $(BONUSBIN)
+	$(CC) $(CFLAGS) $^ $(LIBFTDIR)/$(LIBFTBIN) -o $(BONUSBIN)
 	printf "$(V)$(B)Binary:$(T)$(Y) $(BONUSBIN) $(T)\n"
 	@touch $(BONUSFLAG)
 

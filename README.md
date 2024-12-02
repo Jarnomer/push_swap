@@ -28,7 +28,7 @@ Stacks are build as `doubly linked lists` to allow straight forward operation of
 GNU `make` and `gcc` are required to build and compile the project.
 
 ```bash
-ARG=push_swap; git clone https://github.com/Jarnomer/push_swap.git $ARG && cd $ARG && make
+git clone --recurse-submodules https://github.com/Jarnomer/push_swap.git push_swap
 ```
 
 ## ⚡ Usage

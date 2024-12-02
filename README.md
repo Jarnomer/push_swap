@@ -7,11 +7,15 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Solo-violet?style=for-the-badge" alt="solo">
   <img src="https://img.shields.io/badge/Score-125%2F100-lightgreen?style=for-the-badge" alt="score">
   <img src="https://img.shields.io/github/languages/top/Jarnomer/push_swap?style=for-the-badge&logo=c&label=%20&labelColor=gray&color=lightblue" alt="GitHub top language">
 	<img src="https://img.shields.io/github/languages/code-size/Jarnomer/push_swap?style=for-the-badge&color=lightyellow" alt="GitHub code size in bytes">
   <img src="https://img.shields.io/github/directory-file-count/Jarnomer/push_swap/sources?style=for-the-badge&color=pink" alt="GitHub repo file or directory count (in path)">
+</p>
+
+<p align="center">
+    <img src="https://img.shields.io/badge/Type-Solo-violet?style=for-the-badge" alt="type">
+  <img src="https://img.shields.io/github/last-commit/Jarnomer/push_swap/main?style=for-the-badge&color=red" alt="GitHub last commit (branch)">
 </p>
 
 ## 📝 General

@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-	<b><i>Sorting numbers using two stacks and turkey sort.</i></b><br>
+	<b><i>Sorting numbers using two 🎭 stacks and turkey sort.</i></b><br>
 </p>
 
 <p align="center">

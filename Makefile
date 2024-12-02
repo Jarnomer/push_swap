@@ -131,8 +131,12 @@ reb: fclean
 	make bonus
 
 nm:
-	@$(foreach h, $(HEADERDIR), norminette -R CheckDefine $(h))
-	@$(foreach s, $(SOURCEDIR), norminette -R CheckForbiddenSourceHeader $(s))
+	@if command -v norminette >/dev/null 2>&1; then \
+		$(foreach h, $(HEADERDIR), norminette -R CheckDefine $(h);) \
+		$(foreach s, $(SOURCEDIR), norminette -R CheckForbiddenSourceHeader $(s);) \
+	else \
+		printf "$(R)$(B)Error: $(Y)'norminette' command not found$(T)\n"; exit 1 ; \
+	fi
 
 debug: CFLAGS += $(DEBUGFLAGS)
 debug: re

@@ -114,6 +114,10 @@ static void reverse(t_stack **s)
 
 [Push Swap Visualizer](https://push-swap-visualizer.vercel.app/) simple way to generate numbers for testing.
 
-For general information, please refer the [landing page](https://github.com/Jarnomer/Hive42).
+## 4️⃣2️⃣ Footer
+
+For other 42 project and general information, please refer the [landing page](https://github.com/Jarnomer/Hive42).
+
+You can also find my error handling unit testers for `pipex`, `so_long` or `cub3d` [here](https://github.com/Jarnomer/Hive42).
 
 ### Cheers and good luck! 🥳

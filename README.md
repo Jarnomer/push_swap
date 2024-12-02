@@ -118,6 +118,6 @@ static void reverse(t_stack **s)
 
 For other 42 project and general information, please refer the [landing page](https://github.com/Jarnomer/Hive42).
 
-You can also find my error handling unit testers for `pipex`, `so_long` or `cub3d` [here](https://github.com/Jarnomer/Hive42).
+I have also created error handling [unit testers](https://github.com/Jarnomer/Hive42) for `pipex`, `so_long` or `cub3d`.
 
 ### Cheers and good luck! 🥳

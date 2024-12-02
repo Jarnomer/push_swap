@@ -10,126 +10,204 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		= 	push_swap
-BONUSBIN	=	checker
-DEBUGBIN 	= 	debug.out
-LIBFTDIR 	= 	libft
-LIBFTBIN 	= 	libft.a
-ERRORTXT 	= 	error.txt
-BONUS		=	.bonus
-DEBUG		=	.debug
+# **************************************************************************** #
+#    VARIABLES
+# **************************************************************************** #
 
-RM 			= 	rm -rf
-AR			=	ar -rcs
-CC 			= 	cc
-CFLAGS 		= 	-Wall -Werror -Wextra
+NAME = push_swap
 
-SRCS 		:=	push_swap.c \
-				chk_error.c \
-				chk_split.c \
-				cmd_push.c \
-				cmd_swap.c \
-				cmd_rotate.c \
-				cmd_reverse.c \
-				sort_prep_a.c \
-				sort_prep_b.c \
-				sort_push.c \
-				stack_init.c \
-				stack_sort.c \
-				stack_util.c
+SOURCEDIR := sources
+HEADERDIR := include
+BUILDDIR  := build
+BUILDLOG  := build.log
 
-SRCS_BNS 	:=	$(BONUSBIN).c \
-				$(filter-out $(NAME).c, $(SRCS))
+BONUSDIR  := ./bonus
+BONUSFLAG := .bonus
+BONUSBIN  := checker
 
-SRCS_DEBUG 	:=	$(SRCS_BNS)
+LIBFTDIR  := ./libft
+LIBFTBIN  := libft.a
 
-OBJSDIR 	= 	build
-DEPSDIR 	= 	.deps
-DEPS 		= 	$(SRCS:%.c=$(DEPSDIR)/%.d)
-OBJS 		= 	$(SRCS:%.c=$(OBJSDIR)/%.o)
-OBJS_BNS 	= 	$(SRCS_BNS:%.c=$(OBJSDIR)/%.o)
-OBJS_DEBUG 	= 	$(SRCS_DEBUG:%.c=$(OBJSDIR)/%.o)
-DEPFLAGS 	=	-c -MT $@ -MMD -MP -MF $(DEPSDIR)/$*.d
-DEBUGFLAGS 	=	-g -fsanitize=address,undefined,integer \
-				-fdiagnostics-color=always -fansi-escape-codes
+TESTCASE  := ./$(NAME) "4 0 1 3 2"
 
-FILL		=	======================================
-BOLD		=	\033[1m
-RESET		=	\033[0m
-GREEN		=	\033[32m
-VIOLET		=	\033[35m
-CYAN		=	\033[36m
-RED			=	\033[31m
-YELLOW		=	\033[33m
+# **************************************************************************** #
+#    COMMANDS
+# **************************************************************************** #
+
+RM          := rm -rf
+SCREENCLEAR := printf "\033c"
+
+# **************************************************************************** #
+#    COMPILATION
+# **************************************************************************** #
+
+CC         := cc
+CFLAGS     := -Wall -Werror -Wextra
+CPPFLAGS   := -c -MMD -MP
+DEBUGFLAGS := -g -fsanitize=address
+MAKEFLAGS  += --no-print-directory -j4
+
+# **************************************************************************** #
+#    VALGRIND
+# **************************************************************************** #
+
+LEAKSLOG := leaks.log
+VLGFLAGS := --leak-check=full \
+            --show-leak-kinds=all \
+            --track-origins=yes \
+            --track-fds=yes \
+            --trace-children=yes \
+            --log-file=$(LEAKSLOG) \
+            --verbose \
+            --quiet
+
+# **************************************************************************** #
+#    SOURCES
+# **************************************************************************** #
+
+SOURCES := main \
+		   chk_error \
+		   chk_split \
+		   cmd_push \
+		   cmd_swap \
+		   cmd_rotate \
+		   cmd_reverse \
+		   sort_prep_a \
+		   sort_prep_b \
+		   sort_push \
+		   stack_init \
+		   stack_sort \
+		   stack_util
+
+SOURCES_BONUS := $(BONUSBIN) \
+                 $(filter-out main, $(SOURCES))
+
+SOURCES := $(addsuffix .c, $(SOURCES))
+
+SOURCES_BONUS := $(addsuffix .c, $(SOURCES_BONUS))
+
+OBJECTS := $(addprefix $(BUILDDIR)/, $(SOURCES:.c=.o))
+
+OBJECTS_BONUS = $(addprefix $(BUILDDIR)/, $(SOURCES_BONUS:.c=.o))
+
+INCS := $(addprefix -I, $(HEADERDIR) $(LIBFTDIR)/$(HEADERDIR))
+
+DEPS := $(OBJECTS:.o=.d) $(OBJECTS_BONUS:.o=.d)
+
+vpath %.c $(SOURCEDIR)
+
+# **************************************************************************** #
+#    RULES
+# **************************************************************************** #
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBFTDIR)/$(LIBFTBIN) -o $(NAME)
+	printf "$(V)$(B)Binary:$(T)$(Y) $(NAME) $(T)\n"
+
+bonus: $(BONUSFLAG)
+
+$(BONUSFLAG): $(OBJECTS_BONUS)
+	$(CC) $(CFLAGS) $(OBJECTS_BONUS) $(LIBFTDIR)/$(LIBFTBIN) -o $(BONUSBIN)
+	printf "$(V)$(B)Binary:$(T)$(Y) $(BONUSBIN) $(T)\n"
+	@touch $(BONUSFLAG)
+
+$(OBJECTS) $(OBJECTS_BONUS): $(LIBFTDIR)/$(LIBFTBIN)
+
+libft: $(LIBFTDIR)/$(LIBFTBIN)
+
+$(LIBFTDIR)/$(LIBFTBIN): 
 	@make -C $(LIBFTDIR) all
-	@$(CC) $(CFLAGS) $^ $(LIBFTDIR)/$(LIBFTBIN) -o $@
-	@echo "$(GREEN)$(BOLD)\n$(FILL)$(CYAN)\nFINISHED!$(RESET)\n"
-	@echo "$(VIOLET)Compiled $(GREEN)$(SUCCESS)$(VIOLET) object file(s).$(RESET)\n"
-	@echo "$(VIOLET)Using compiler $(GREEN)$(CC)$(VIOLET) with flags: $(GREEN)$(CFLAGS)$(RESET)\n"
-	@echo "$(VIOLET)Successfully compiled binary: $(GREEN)$(BOLD)$(NAME)$(RESET)\n"
 
-$(OBJSDIR)/%.o: %.c | $(OBJSDIR) $(DEPSDIR)
-	@if ! $(CC) $(CFLAGS) $(DEPFLAGS) $< -o $@ 2> $(ERRORTXT); then \
-		echo "$(RED)$(BOLD)\nMAKEFILE TERMINATED!\n$(FILL)$(RESET)\n"; \
-		echo "$(VIOLET)Unable to create object file: $(RED)$(BOLD)$@$(RESET)\n"; \
-		echo "$(RED)$(BOLD)ERROR>>>>>>>>>>>>>>>$(RESET)$(YELLOW)\n"; \
-		sed '$$d' $(ERRORTXT); \
-		echo "$(RED)$(BOLD)\n$(FILL)\nExiting...$(RESET)\n"; \
-		exit 1; fi
-	@if [ $(SUCCESS) ]; then \
-		$(eval SUCCESS=$(shell echo $$(($(SUCCESS)+1)))) \
-		echo "$(RESET)$(VIOLET)$<$(RESET) -> $(GREEN)$(BOLD)$@$(RESET)"; else \
-		echo "$(GREEN)$(BOLD)$(CYAN)\nMAKE START!\n$(GREEN)$(FILL)$(RESET)\n \
-		\n$(VIOLET)$<$(RESET) -> $(GREEN)$(BOLD)$@$(RESET)"; fi
+run: all
+	$(SCREENCLEAR)
+	$(TESTCASE)
 
-bonus: $(BONUS)
+re: fclean
+	make all
 
-$(BONUS): $(OBJS_BNS)
-	@make -C $(LIBFTDIR)
-	@$(CC) $(CFLAGS) $^ $(LIBFTDIR)/$(LIBFTBIN) -o $(BONUSBIN)
-	@echo "$(GREEN)$(BOLD)\n$(FILL)$(CYAN)\nFINISHED!$(RESET)\n"
-	@echo "$(VIOLET)Compiled $(GREEN)$(SUCCESS)$(VIOLET) object file(s).$(RESET)\n"
-	@echo "$(VIOLET)Using compiler $(GREEN)$(CC)$(VIOLET) with flags $(GREEN)$(CFLAGS)$(RESET)\n"
-	@echo "$(VIOLET)Successfully compiled binary: $(GREEN)$(BOLD)$(BONUSBIN)$(RESET)\n"
-	@touch $(BONUS)
+reb: fclean
+	make bonus
 
-debug: $(DEBUG)
+nm:
+	@$(foreach h, $(HEADERDIR), norminette -R CheckDefine $(h))
+	@$(foreach s, $(SOURCEDIR), norminette -R CheckForbiddenSourceHeader $(s))
 
-$(DEBUG): $(OBJS_DEBUG)
-	@make -C $(LIBFTDIR)
-	@$(CC) $(CFLAGS) $^ $(LIBFTDIR)/$(LIBFTBIN) -o $(DEBUGBIN)
-	@echo "$(GREEN)$(BOLD)\n$(FILL)$(CYAN)\nFINISHED!$(RESET)\n"
-	@echo "$(VIOLET)Compiled $(GREEN)$(SUCCESS)$(VIOLET) object file(s).$(RESET)\n"
-	@echo "$(VIOLET)Using compiler $(GREEN)$(CC)$(VIOLET) with flags $(GREEN)$(CFLAGS) $(DEBUGFLAGS)$(RESET)\n"
-	@echo "$(VIOLET)Successfully compiled binary: $(GREEN)$(BOLD)$(DEBUGBIN)$(RESET)\n"
-	@touch $(DEBUG)
+debug: CFLAGS += $(DEBUGFLAGS)
+debug: re
+
+leaks: all
+	valgrind $(VLGFLAGS) $(TESTCASE)
+	$(call report_cmd, $(LEAKSLOG))
+
+define report_cmd
+	$(SCREENCLEAR)
+	cat $1 | tail -n +4 | cut --complement -d' ' -f1
+endef
+
+# **************************************************************************** #
+#    BUILD
+# **************************************************************************** #
+
+define build_cmd
+$1/%.o: %.c | $(BUILDDIR)
+	if ! $(CC) $(CFLAGS) $(CPPFLAGS) $(INCS) $$< -o $$@ 2> $(BUILDLOG); then \
+		printf "$(R)$(B)\nError: \
+		$(V)Unable to create object file: \
+		$(R)$(B)$$@$(Y)\n\n"; \
+		sed '$$d' $(BUILDLOG); exit 1 ; \
+	else \
+		printf "$(C)$(B)Object: $(G)$$@ $(T)\n"; \
+	fi
+endef
+
+# **************************************************************************** #
+#    CLEAN
+# **************************************************************************** #
 
 clean:
-	@echo "$(GREEN)$(BOLD)$(CYAN)\nCLEAN START!\n$(GREEN)$(FILL)$(RESET)\n"
-	@echo "$(VIOLET)Removing object and dependency file(s) for $(GREEN)$(BOLD)$(LIBFTBIN)$(RESET)"
-	@make -C $(LIBFTDIR) clean
-	@echo "\n$(VIOLET)Removing object and dependency file(s) for $(GREEN)$(BOLD)$(NAME)$(RESET)\n"
-	@$(RM) $(OBJSDIR) $(DEPSDIR) $(ERRORTXT) $(DEBUG) $(BONUS)
-	@echo "$(GREEN)$(BOLD)$(FILL)$(CYAN)\nFINISHED!$(RESET)"
+	@make -C $(LIBFTDIR) fclean
+	$(call delete_cmd, $(BUILDDIR), $(BUILDLOG), $(LEAKSLOG))
+	@$(RM) $(BONUSFLAG)
 
 fclean: clean
-	@echo "$(GREEN)$(BOLD)$(CYAN)\nFCLEAN START!\n$(GREEN)$(FILL)$(RESET)\n"
-	@echo "$(VIOLET)Removing all binary file(s) for $(GREEN)$(BOLD)$(LIBFTBIN)$(RESET) \
-	$(VIOLET)and $(GREEN)$(BOLD)$(NAME)$(RESET)"
-	@$(RM) $(OBJSDIR) $(DEPSDIR) $(ERRORTXT) $(DEBUG) $(BONUS)
-	@echo "$(GREEN)$(BOLD)\n$(FILL)$(CYAN)\nFINISHED!$(RESET)"
-	@$(RM) $(NAME) $(BONUSBIN) $(DEBUGBIN) $(LIBFTDIR)/$(LIBFTBIN)
+	$(call delete_cmd, $(NAME) $(BONUSBIN))
 
-re: fclean all
+define delete_cmd
+	printf "$(R)$(B)Delete:$(T)$(Y)$1$2$3$4$5$(T)\n"
+	$(RM) $1 $2 $3 $4 $5
+endef
 
-$(OBJSDIR) $(DEPSDIR):
-	@mkdir -p $@
+# **************************************************************************** #
+#    COLORS
+# **************************************************************************** #
 
-$(DEPS):
-	include $(wildcard $(DEPS))
+T = \033[0m
+B = \033[1m
+G = \033[32m
+V = \033[35m
+C = \033[36m
+Y = \033[33m
+R = \033[31m
 
-.PHONY: all bonus debug clean fclean re
+# **************************************************************************** #
+#    UTILS
+# **************************************************************************** #
+
+-include $(DEPS)
+
+$(BUILDDIR):
+	mkdir -p $@
+
+$(foreach build, $(BUILDDIR), $(eval $(call build_cmd, $(build))))
+
+# **************************************************************************** #
+#    PHONY
+# **************************************************************************** #
+
+.PHONY: all bonus re reb
+.PHONY: debug libft nm
+.PHONY: clean fclean
+
+.SILENT:

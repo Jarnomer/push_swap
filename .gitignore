@@ -1,0 +1,10 @@
+push_swap
+checker
+.bonus
+*build
+*.vscode
+*.log
+*.pdf
+*.txt
+*.sh
+*.a

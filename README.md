@@ -18,6 +18,17 @@
   <img src="https://img.shields.io/github/last-commit/Jarnomer/push_swap/main?style=for-the-badge&color=red" alt="GitHub last commit (branch)">
 </p>
 
+<div align="center">
+
+## Table of Contents
+[📝 General](#-general)
+[🛠️ Build](#️-build)
+[⚡ Usage](#-usage)
+[🚀 Details](#-details)
+[♻️ Resources](#️-resources)
+
+</div>
+
 ## 📝 General
 
 Goal of the project is to sort numbers using two stacks and least amounts of commands.
@@ -34,6 +45,10 @@ GNU `make` and `gcc` are required to build and compile the project.
 
 ```bash
 git clone --recurse-submodules https://github.com/Jarnomer/push_swap.git push_swap
+```
+
+```bash
+cd push_swap && make all
 ```
 
 ## ⚡ Usage
@@ -83,7 +98,7 @@ OK
 ARG="4 0 1 3 2"; ./push_swap $ARG | ./checker $ARG
 ```
 
-## 📊 Commands
+## 🚀 Details
 
 Only following `commands` are allowed by the algorithm.
 

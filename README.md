@@ -58,7 +58,7 @@ pa
 ra
 ```
 
-`checker` can be used the same way, then write commands to `STDIN` and finish input with `Crtl + D`. 
+`checker` can be used the same way, then write commands to `STDIN` and finish the input with `Crtl + D`. 
 
 If stack was sorted correctly, `OK` is shown in `STDOUT` else writes `KO`. Incorrect command results into `Error`.
 

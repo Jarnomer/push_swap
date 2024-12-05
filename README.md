@@ -1,5 +1,5 @@
 <h1 align="center">
-  <b>push_swap</b>
+  <img src="assets/push_swap.png" alt="push_swap" width="400">
 </h1>
 
 <p align="center">

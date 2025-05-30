@@ -26,24 +26,24 @@ static void	reverse(t_stack **s)
 	bottom->next->prev = bottom;
 }
 
-void	rra(t_stack **a, bool checker)
+void	rra(t_stack **a, bool silent)
 {
 	reverse(a);
-	if (!checker)
+	if (!silent)
 		ft_printf("rra\n");
 }
 
-void	rrb(t_stack **b, bool checker)
+void	rrb(t_stack **b, bool silent)
 {
 	reverse(b);
-	if (!checker)
+	if (!silent)
 		ft_printf("rrb\n");
 }
 
-void	rrr(t_stack **a, t_stack **b, bool checker)
+void	rrr(t_stack **a, t_stack **b, bool silent)
 {
 	reverse(a);
 	reverse(b);
-	if (!checker)
+	if (!silent)
 		ft_printf("rrr\n");
 }

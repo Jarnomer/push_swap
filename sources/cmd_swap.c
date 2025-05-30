@@ -25,24 +25,24 @@ static void	swap(t_stack **s)
 	(*s)->prev = NULL;
 }
 
-void	sa(t_stack**a, bool checker)
+void	sa(t_stack**a, bool silent)
 {
 	swap(a);
-	if (!checker)
+	if (!silent)
 		ft_printf("sa\n");
 }
 
-void	sb(t_stack **b, bool checker)
+void	sb(t_stack **b, bool silent)
 {
 	swap(b);
-	if (!checker)
+	if (!silent)
 		ft_printf("sb\n");
 }
 
-void	ss(t_stack **a, t_stack **b, bool checker)
+void	ss(t_stack **a, t_stack **b, bool silent)
 {
 	swap(a);
 	swap(b);
-	if (!checker)
+	if (!silent)
 		ft_printf("ss\n");
 }

@@ -44,16 +44,8 @@ typedef struct s_stack
 	bool			is_deal;
 }	t_stack;
 
-/* ************************************************************************** */
-/*                                   INIT                                     */
-/* ************************************************************************** */
-
 void	split_argv(int argc, char *argv, t_stack **a);
 int		stack_init(int argc, char **argv, t_stack **s, bool splitted);
-
-/* ************************************************************************** */
-/*                               SORTING                                      */
-/* ************************************************************************** */
 
 void	sort_stack(t_stack **a, t_stack **b);
 void	sort_prep_a(t_stack *a, t_stack *b);
@@ -61,33 +53,21 @@ void	sort_push_a(t_stack **a, t_stack **b);
 void	sort_prep_b(t_stack *b, t_stack *a);
 void	sort_push_b(t_stack **b, t_stack **a);
 
-/* ************************************************************************** */
-/*                               COMMANDS                                     */
-/* ************************************************************************** */
-
-void	sa(t_stack **a, bool checker);
-void	sb(t_stack **b, bool checker);
-void	ss(t_stack **a, t_stack **b, bool checker);
-void	pa(t_stack **a, t_stack **b, bool checker);
-void	pb(t_stack **b, t_stack **a, bool checker);
-void	ra(t_stack **a, bool checker);
-void	rb(t_stack **b, bool checker);
-void	rr(t_stack **a, t_stack **b, bool checker);
-void	rra(t_stack **a, bool checker);
-void	rrb(t_stack **b, bool checker);
-void	rrr(t_stack **a, t_stack **b, bool checker);
-
-/* ************************************************************************** */
-/*                             ERROR HANDLING                                 */
-/* ************************************************************************** */
+void	sa(t_stack **a, bool silent);
+void	sb(t_stack **b, bool silent);
+void	ss(t_stack **a, t_stack **b, bool silent);
+void	pa(t_stack **a, t_stack **b, bool silent);
+void	pb(t_stack **b, t_stack **a, bool silent);
+void	ra(t_stack **a, bool silent);
+void	rb(t_stack **b, bool silent);
+void	rr(t_stack **a, t_stack **b, bool silent);
+void	rra(t_stack **a, bool silent);
+void	rrb(t_stack **b, bool silent);
+void	rrr(t_stack **a, t_stack **b, bool silent);
 
 bool	is_invalid_input(int argc, char **argv, bool splitted);
 bool	is_duplicate_number(t_stack *a, int num);
 void	error_occured(t_stack **a);
-
-/* ************************************************************************** */
-/*                             STACK UTILITIES                                */
-/* ************************************************************************** */
 
 bool	stack_sorted(t_stack *s);
 t_stack	*find_smallest(t_stack *s);

@@ -35,16 +35,16 @@ static void	push(t_stack **dst, t_stack **src)
 	}
 }
 
-void	pa(t_stack **a, t_stack **b, bool checker)
+void	pa(t_stack **a, t_stack **b, bool silent)
 {
 	push(a, b);
-	if (!checker)
+	if (!silent)
 		ft_printf("pa\n");
 }
 
-void	pb(t_stack **b, t_stack **a, bool checker)
+void	pb(t_stack **b, t_stack **a, bool silent)
 {
 	push(b, a);
-	if (!checker)
+	if (!silent)
 		ft_printf("pb\n");
 }

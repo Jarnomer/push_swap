@@ -52,32 +52,31 @@ MAKEFLAGS  += --no-print-directory -j4
 # **************************************************************************** #
 
 LEAKSLOG := leaks.log
-VLGFLAGS := --leak-check=full \
+VLGFLAGS := --log-file=$(LEAKSLOG) \
+            --leak-check=full \
             --show-leak-kinds=all \
             --track-origins=yes \
             --track-fds=yes \
             --trace-children=yes \
-            --log-file=$(LEAKSLOG) \
-            --verbose \
-            --quiet
+            --verbose
 
 # **************************************************************************** #
 #    SOURCES
 # **************************************************************************** #
 
 SOURCES := main \
-		   chk_error \
-		   chk_split \
-		   cmd_push \
-		   cmd_swap \
-		   cmd_rotate \
-		   cmd_reverse \
-		   sort_prep_a \
-		   sort_prep_b \
-		   sort_push \
-		   stack_init \
-		   stack_sort \
-		   stack_util
+           chk_error \
+           chk_split \
+           cmd_push \
+           cmd_swap \
+           cmd_rotate \
+           cmd_reverse \
+           sort_prep_a \
+           sort_prep_b \
+           sort_push \
+           stack_init \
+           stack_sort \
+           stack_util
 
 SOURCES_BONUS := $(BONUSBIN) \
                  $(filter-out main, $(SOURCES))
@@ -134,10 +133,11 @@ debug: CFLAGS += $(DEBUGFLAGS)
 debug: re
 
 nm:
-	$(foreach d, $(HEADERDIR), $(foreach h, $(wildcard $(d)/*), \
-		norminette -R CheckDefine $(h);))
-	$(foreach d, $(SOURCEDIR), $(foreach s, $(wildcard $(d)/*), \
-		norminette -R CheckForbiddenSourceHeader $(s);))
+ifneq ($(shell command -v norminette >/dev/null 2>&1 && echo 1 || echo 0), 1)
+	@printf "$(R)$(B)Error: norminette: $(Y)command not found$(T)\n"; exit 1
+endif
+	$(foreach h, $(HEADERDIR), norminette -R CheckDefine $(h))
+	$(foreach s, $(SOURCEDIR), norminette -R CheckForbiddenSourceHeader $(s))
 
 leaks: all
 	valgrind $(VLGFLAGS) $(TESTCASE)

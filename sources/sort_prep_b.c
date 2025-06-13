@@ -14,51 +14,57 @@
 
 static void	update_target(t_stack *b, t_stack *a)
 {
-	t_stack	*temp;
-	t_stack	*target;
+	int		target_idx;
 	long	closest_larger;
+	int		i;
+	int		j;
 
-	while (b)
+	i = 0;
+	while (i < b->size)
 	{
-		temp = a;
+		j = 0;
 		closest_larger = LONG_MAX;
-		while (temp)
+		target_idx = -1;
+		while (j < a->size)
 		{
-			if (temp->num > b->num && temp->num < closest_larger)
+			if (a->data[j].num > b->data[i].num 
+				&& a->data[j].num < closest_larger)
 			{
-				closest_larger = temp->num;
-				target = temp;
+				closest_larger = a->data[j].num;
+				target_idx = j;
 			}
-			temp = temp->next;
+			j++;
 		}
-		if (closest_larger != LONG_MAX)
-			b->target = target;
+		if (target_idx != -1)
+			b->data[i].target_idx = target_idx;
 		else
-			b->target = find_smallest(a);
-		b = b->next;
+			b->data[i].target_idx = find_smallest(a);
+		i++;
 	}
 }
 
-static void	prepare_stack(t_stack *s, int size)
+static void	prepare_stack(t_stack *s)
 {
 	int	i;
+	int	median;
 
+	if (!s || s->size == 0)
+		return ;
+	median = (s->size - 1) / 2;
 	i = 0;
-	while (s)
+	while (i < s->size)
 	{
-		s->index = i;
-		s->size = size;
-		if (i++ <= size / 2)
-			s->is_above = true;
+		if (i <= median)
+			s->data[i].is_above = true;
 		else
-			s->is_above = false;
-		s = s->next;
+			s->data[i].is_above = false;
+		i++;
 	}
 }
 
 void	sort_prep_b(t_stack *b, t_stack *a)
 {
-	prepare_stack(b, stack_size(b));
-	prepare_stack(a, stack_size(a));
+	prepare_stack(b);
+	prepare_stack(a);
 	update_target(b, a);
 }

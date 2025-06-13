@@ -12,57 +12,77 @@
 
 #include <push_swap.h>
 
-static void	mix_rotate(t_stack **a, t_stack **b, t_stack *deal)
+static int	find_deal_index(t_stack *a)
 {
-	if ((*a)->num != deal->num && deal->is_above)
-		while ((*a)->num != deal->num)
-			ra(a, false);
-	if ((*a)->num != deal->num && !deal->is_above)
-		while ((*a)->num != deal->num)
-			rra(a, false);
-	if ((*b)->num != deal->target->num && deal->target->is_above)
-		while ((*b)->num != deal->target->num)
-			rb(b, false);
-	if ((*b)->num != deal->target->num && !deal->target->is_above)
-		while ((*b)->num != deal->target->num)
-			rrb(b, false);
-}
+	int	i;
 
-static t_stack	*get_deal(t_stack *a)
-{
 	if (!a)
-		return (NULL);
-	while (a)
+		return (-1);
+	i = 0;
+	while (i < a->size)
 	{
-		if (a->is_deal)
-			break ;
-		a = a->next;
+		if (a->data[i].is_deal)
+			return (i);
+		i++;
 	}
-	return (a);
+	return (-1);
 }
 
-void	sort_push_a(t_stack **a, t_stack **b)
+static void	rotate_to_top(t_stack *stack, int target_value, 
+	void (*rotate)(t_stack *, bool), void (*reverse)(t_stack *, bool))
 {
-	t_stack	*deal;
+	int	i;
+	int	pos;
 
-	deal = get_deal(*a);
-	if (deal->is_above && deal->target->is_above)
-		while ((*a)->num != deal->num && (*b)->num != deal->target->num)
-			rr(a, b, false);
-	else if (!deal->is_above && !deal->target->is_above)
-		while ((*a)->num != deal->num && (*b)->num != deal->target->num)
-			rrr(a, b, false);
-	mix_rotate(a, b, deal);
+	pos = -1;
+	i = 0;
+	while (i < stack->size)
+	{
+		if (stack->data[i].num == target_value)
+		{
+			pos = i;
+			break ;
+		}
+		i++;
+	}
+	if (pos == -1 || pos == 0)
+		return ;
+	if (pos <= stack->size / 2)
+	{
+		while (pos-- > 0)
+			rotate(stack, false);
+	}
+	else
+	{
+		pos = stack->size - pos;
+		while (pos-- > 0)
+			reverse(stack, false);
+	}
+}
+
+void	sort_push_a(t_stack *a, t_stack *b)
+{
+	int	deal_idx;
+	int	deal_value;
+	int	target_value;
+
+	deal_idx = find_deal_index(a);
+	if (deal_idx == -1)
+		return ;
+	deal_value = a->data[deal_idx].num;
+	target_value = b->data[a->data[deal_idx].target_idx].num;
+	rotate_to_top(a, deal_value, ra, rra);
+	rotate_to_top(b, target_value, rb, rrb);
 	pb(b, a, false);
 }
 
-void	sort_push_b(t_stack **b, t_stack **a)
+void	sort_push_b(t_stack *b, t_stack *a)
 {
-	if ((*b)->target->is_above)
-		while ((*a)->num != (*b)->target->num)
-			ra(a, false);
-	if (!(*b)->target->is_above)
-		while ((*b)->target->num != (*a)->num)
-			rra(a, false);
+	int	target_value;
+
+	if (b->size == 0)
+		return ;
+	target_value = a->data[b->data[0].target_idx].num;
+	rotate_to_top(a, target_value, ra, rra);
 	pa(a, b, false);
 }

@@ -14,58 +14,69 @@
 
 bool	stack_sorted(t_stack *s)
 {
-	if (!s)
+	int	i;
+
+	if (!s || s->size < 2)
 		return (true);
-	while (s->next)
+	i = 0;
+	while (i < s->size - 1)
 	{
-		if (s->num > s->next->num)
+		if (s->data[i].num > s->data[i + 1].num)
 			return (false);
-		s = s->next;
+		i++;
 	}
 	return (true);
 }
 
-t_stack	*find_smallest(t_stack *s)
+int	find_smallest(t_stack *s)
 {
-	t_stack	*lowest;
-	int		min;
+	int	min_idx;
+	int	min_val;
+	int	i;
 
-	if (!s)
-		return (NULL);
-	min = INT_MAX;
-	while (s)
+	if (!s || s->size == 0)
+		return (-1);
+	min_val = INT_MAX;
+	min_idx = 0;
+	i = 0;
+	while (i < s->size)
 	{
-		if (s->num < min)
+		if (s->data[i].num < min_val)
 		{
-			min = s->num;
-			lowest = s;
+			min_val = s->data[i].num;
+			min_idx = i;
 		}
-		s = s->next;
+		i++;
 	}
-	return (lowest);
+	return (min_idx);
 }
 
-t_stack	*find_largest(t_stack *s)
+int	find_largest(t_stack *s)
 {
-	t_stack	*largest;
-	int		max;
+	int	max_idx;
+	int	max_val;
+	int	i;
 
-	if (!s)
-		return (NULL);
-	max = INT_MIN;
-	while (s)
+	if (!s || s->size == 0)
+		return (-1);
+	max_val = INT_MIN;
+	max_idx = 0;
+	i = 0;
+	while (i < s->size)
 	{
-		if (s->num > max)
+		if (s->data[i].num > max_val)
 		{
-			max = s->num;
-			largest = s;
+			max_val = s->data[i].num;
+			max_idx = i;
 		}
-		s = s->next;
+		i++;
 	}
-	return (largest);
+	return (max_idx);
 }
 
 int	stack_size(t_stack *s)
 {
-	return (ft_lstsize((t_list *)s));
+	if (!s)
+		return (0);
+	return (s->size);
 }

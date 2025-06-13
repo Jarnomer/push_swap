@@ -12,22 +12,28 @@
 
 #include <push_swap.h>
 
-void	error_occured(t_stack **a)
+void	error_occured(t_stack *a, t_stack *b)
 {
-	ft_lstclear((t_list **)a, NULL);
+	if (a)
+		stack_destroy(a);
+	if (b)
+		stack_destroy(b);
 	ft_putendl_fd("Error", STDERR_FILENO);
 	exit(EXIT_FAILURE);
 }
 
 bool	is_duplicate_number(t_stack *a, int num)
 {
+	int	i;
+
 	if (!a)
 		return (false);
-	while (a)
+	i = 0;
+	while (i < a->size)
 	{
-		if (a->num == num)
+		if (a->data[i].num == num)
 			return (true);
-		a = a->next;
+		i++;
 	}
 	return (false);
 }

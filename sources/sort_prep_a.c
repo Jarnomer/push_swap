@@ -14,87 +14,111 @@
 
 static void	update_is_deal(t_stack *s)
 {
-	t_stack	*bargain;
-	int		deal;
+	int	bargain_idx;
+	int	min_cost;
+	int	i;
 
-	deal = INT_MAX;
-	while (s)
+	if (!s || s->size == 0)
+		return ;
+	min_cost = INT_MAX;
+	bargain_idx = 0;
+	i = 0;
+	while (i < s->size)
 	{
-		if (s->cost < deal)
+		s->data[i].is_deal = false;
+		if (s->data[i].cost < min_cost)
 		{
-			deal = s->cost;
-			bargain = s;
+			min_cost = s->data[i].cost;
+			bargain_idx = i;
 		}
-		s = s->next;
+		i++;
 	}
-	bargain->is_deal = true;
+	if (bargain_idx < s->size)
+		s->data[bargain_idx].is_deal = true;
 }
 
-static void	update_cost(t_stack *a)
+static void	update_cost(t_stack *a, t_stack *b)
 {
-	while (a)
+	int	i;
+	int	a_cost;
+	int	b_cost;
+	int	target_idx;
+
+	i = 0;
+	while (i < a->size)
 	{
-		if (a->is_above)
-			a->cost = a->index;
+		a_cost = i;
+		if (!a->data[i].is_above)
+			a_cost = a->size - i;
+		target_idx = a->data[i].target_idx;
+		if (target_idx >= 0 && target_idx < b->size)
+		{
+			b_cost = target_idx;
+			if (!b->data[target_idx].is_above)
+				b_cost = b->size - target_idx;
+			a->data[i].cost = a_cost + b_cost;
+		}
 		else
-			a->cost = a->size - a->index;
-		if (a->target->is_above)
-			a->cost += a->target->index;
-		else
-			a->cost += a->target->size - a->target->index;
-		a = a->next;
+			a->data[i].cost = INT_MAX;
+		i++;
 	}
 }
 
 static void	update_target(t_stack *a, t_stack *b)
 {
-	t_stack	*temp;
-	t_stack	*target;
+	int		target_idx;
 	long	closest_smaller;
+	int		i;
+	int		j;
 
-	while (a)
+	i = 0;
+	while (i < a->size)
 	{
-		temp = b;
+		j = 0;
 		closest_smaller = LONG_MIN;
-		while (temp)
+		target_idx = -1;
+		while (j < b->size)
 		{
-			if (temp->num < a->num && temp->num > closest_smaller)
+			if (b->data[j].num < a->data[i].num 
+				&& b->data[j].num > closest_smaller)
 			{
-				closest_smaller = temp->num;
-				target = temp;
+				closest_smaller = b->data[j].num;
+				target_idx = j;
 			}
-			temp = temp->next;
+			j++;
 		}
-		if (closest_smaller != LONG_MIN)
-			a->target = target;
+		if (target_idx != -1)
+			a->data[i].target_idx = target_idx;
 		else
-			a->target = find_largest(b);
-		a = a->next;
+			a->data[i].target_idx = find_largest(b);
+		i++;
 	}
 }
 
-static void	prepare_stack(t_stack *s, int size)
+static void	prepare_stack(t_stack *s)
 {
 	int	i;
+	int	median;
 
+	if (!s || s->size == 0)
+		return ;
+	median = (s->size - 1) / 2;
 	i = 0;
-	while (s)
+	while (i < s->size)
 	{
-		s->index = i;
-		s->size = size;
-		if (i++ <= size / 2)
-			s->is_above = true;
+		if (i <= median)
+			s->data[i].is_above = true;
 		else
-			s->is_above = false;
-		s = s->next;
+			s->data[i].is_above = false;
+		i++;
 	}
 }
 
 void	sort_prep_a(t_stack *a, t_stack *b)
 {
-	prepare_stack(a, stack_size(a));
-	prepare_stack(b, stack_size(b));
+	prepare_stack(a);
+	prepare_stack(b);
 	update_target(a, b);
-	update_cost(a);
+	update_cost(a, b);
 	update_is_deal(a);
 }

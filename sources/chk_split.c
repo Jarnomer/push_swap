@@ -12,10 +12,10 @@
 
 #include <push_swap.h>
 
-static void	exit_failure(void ***arr, t_stack **a)
+static void	exit_failure(void ***arr, t_stack *a)
 {
 	ft_free_double(arr);
-	error_occured(a);
+	error_occured(a, NULL);
 }
 
 static int	argv_count(char const *s, char c)
@@ -42,7 +42,7 @@ void	split_argv(int argc, char *argv, t_stack **a)
 	argc = argv_count(argv, ' ');
 	arr = ft_split(argv, ' ');
 	if (!arr || is_invalid_input(argc, arr, true)
-		|| stack_init(argc, arr, a, true) == -1)
-		exit_failure((void ***)&arr, a);
+		|| stack_init(argc, arr, *a, true) == -1)
+		exit_failure((void ***)&arr, *a);
 	ft_free_double((void ***)&arr);
 }

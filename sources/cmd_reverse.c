@@ -12,35 +12,38 @@
 
 #include <push_swap.h>
 
-static void	reverse(t_stack **s)
+static void	reverse(t_stack *s)
 {
-	t_stack	*bottom;
+	t_element	temp;
+	int			i;
 
-	if (!s || !*s || !(*s)->next)
+	if (!s || s->size < 2)
 		return ;
-	bottom = (t_stack *)ft_lstlast((t_list *)*s);
-	bottom->prev->next = NULL;
-	bottom->next = *s;
-	bottom->prev = NULL;
-	*s = bottom;
-	bottom->next->prev = bottom;
+	temp = s->data[s->size - 1];
+	i = s->size - 1;
+	while (i > 0)
+	{
+		s->data[i] = s->data[i - 1];
+		i--;
+	}
+	s->data[0] = temp;
 }
 
-void	rra(t_stack **a, bool silent)
+void	rra(t_stack *a, bool silent)
 {
 	reverse(a);
 	if (!silent)
 		ft_printf("rra\n");
 }
 
-void	rrb(t_stack **b, bool silent)
+void	rrb(t_stack *b, bool silent)
 {
 	reverse(b);
 	if (!silent)
 		ft_printf("rrb\n");
 }
 
-void	rrr(t_stack **a, t_stack **b, bool silent)
+void	rrr(t_stack *a, t_stack *b, bool silent)
 {
 	reverse(a);
 	reverse(b);

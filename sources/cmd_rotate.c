@@ -12,35 +12,38 @@
 
 #include <push_swap.h>
 
-static void	rotate(t_stack **s)
+static void	rotate(t_stack *s)
 {
-	t_stack	*bottom;
+	t_element	temp;
+	int			i;
 
-	if (!s || !*s || !(*s)->next)
+	if (!s || s->size < 2)
 		return ;
-	bottom = (t_stack *)ft_lstlast((t_list *)*s);
-	bottom->next = *s;
-	*s = (*s)->next;
-	(*s)->prev = NULL;
-	bottom->next->prev = bottom;
-	bottom->next->next = NULL;
+	temp = s->data[0];
+	i = 0;
+	while (i < s->size - 1)
+	{
+		s->data[i] = s->data[i + 1];
+		i++;
+	}
+	s->data[s->size - 1] = temp;
 }
 
-void	ra(t_stack **a, bool silent)
+void	ra(t_stack *a, bool silent)
 {
 	rotate(a);
 	if (!silent)
 		ft_printf("ra\n");
 }
 
-void	rb(t_stack **b, bool silent)
+void	rb(t_stack *b, bool silent)
 {
 	rotate(b);
 	if (!silent)
 		ft_printf("rb\n");
 }
 
-void	rr(t_stack **a, t_stack **b, bool silent)
+void	rr(t_stack *a, t_stack *b, bool silent)
 {
 	rotate(a);
 	rotate(b);

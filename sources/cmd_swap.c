@@ -12,34 +12,32 @@
 
 #include <push_swap.h>
 
-static void	swap(t_stack **s)
+static void	swap(t_stack *s)
 {
-	if (!s || !*s || !(*s)->next)
+	t_element	temp;
+
+	if (!s || s->size < 2)
 		return ;
-	*s = (*s)->next;
-	(*s)->prev->prev = *s;
-	(*s)->prev->next = (*s)->next;
-	if ((*s)->next)
-		(*s)->next->prev = (*s)->prev;
-	(*s)->next = (*s)->prev;
-	(*s)->prev = NULL;
+	temp = s->data[0];
+	s->data[0] = s->data[1];
+	s->data[1] = temp;
 }
 
-void	sa(t_stack**a, bool silent)
+void	sa(t_stack *a, bool silent)
 {
 	swap(a);
 	if (!silent)
 		ft_printf("sa\n");
 }
 
-void	sb(t_stack **b, bool silent)
+void	sb(t_stack *b, bool silent)
 {
 	swap(b);
 	if (!silent)
 		ft_printf("sb\n");
 }
 
-void	ss(t_stack **a, t_stack **b, bool silent)
+void	ss(t_stack *a, t_stack *b, bool silent)
 {
 	swap(a);
 	swap(b);

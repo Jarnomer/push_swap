@@ -12,37 +12,42 @@
 
 #include <push_swap.h>
 
-static void	push(t_stack **dst, t_stack **src)
+static void	push(t_stack *dst, t_stack *src)
 {
-	t_stack	*temp;
+	t_element	temp;
+	int			i;
 
-	if (!dst || !src || !*src)
+	if (!dst || !src || src->size == 0)
 		return ;
-	temp = *src;
-	*src = (*src)->next;
-	if (*src)
-		(*src)->prev = NULL;
-	if (!*dst)
+	if (dst->size >= dst->capacity)
+		if (stack_resize(dst) == -1)
+			return ;
+	temp = src->data[0];
+	i = 0;
+	while (i < src->size - 1)
 	{
-		*dst = temp;
-		(*dst)->next = NULL;
+		src->data[i] = src->data[i + 1];
+		i++;
 	}
-	else
+	src->size--;
+	i = dst->size;
+	while (i > 0)
 	{
-		temp->next = *dst;
-		temp->next->prev = temp;
-		*dst = temp;
+		dst->data[i] = dst->data[i - 1];
+		i--;
 	}
+	dst->data[0] = temp;
+	dst->size++;
 }
 
-void	pa(t_stack **a, t_stack **b, bool silent)
+void	pa(t_stack *a, t_stack *b, bool silent)
 {
 	push(a, b);
 	if (!silent)
 		ft_printf("pa\n");
 }
 
-void	pb(t_stack **b, t_stack **a, bool silent)
+void	pb(t_stack *b, t_stack *a, bool silent)
 {
 	push(b, a);
 	if (!silent)

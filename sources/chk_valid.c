@@ -12,13 +12,6 @@
 
 #include <push_swap.h>
 
-void	error_occured(t_stack **a)
-{
-	ft_lstclear((t_list **)a, NULL);
-	ft_putendl_fd("Error", STDERR_FILENO);
-	exit(EXIT_FAILURE);
-}
-
 bool	is_duplicate_number(t_stack *a, int num)
 {
 	if (!a)

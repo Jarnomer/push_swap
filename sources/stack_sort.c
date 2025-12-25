@@ -14,14 +14,28 @@
 
 static void	stack_align(t_stack **a)
 {
-	if (stack_size(*a) == 1)
+	t_stack	*smallest;
+	t_stack	*temp;
+	int		pos;
+	int		size;
+
+	pos = 0;
+	temp = *a;
+	size = stack_size(*a);
+	if (size <= 1)
 		return ;
-	while ((*a)->num != find_smallest(*a)->num)
+	smallest = find_smallest(*a);
+	while (temp && temp != smallest)
 	{
-		if (find_smallest(*a)->is_above)
-			ra(a, false);
+		temp = temp->next;
+		pos++;
+	}
+	while ((*a)->num != smallest->num)
+	{
+		if (pos <= size / 2)
+			ra(a, IS_PUSH_SWAP);
 		else
-			rra(a, false);
+			rra(a, IS_PUSH_SWAP);
 	}
 }
 
@@ -37,7 +51,7 @@ static void	push_a_to_b(t_stack **a, t_stack **b)
 	sort_push_a(a, b);
 }
 
-static void	sort_small(t_stack **a, int len)
+static void	sort_three(t_stack **a, int len)
 {
 	t_stack	*largest;
 
@@ -45,23 +59,33 @@ static void	sort_small(t_stack **a, int len)
 	{
 		largest = find_largest(*a);
 		if (len == 2)
-			sa(a, false);
+			sa(a, IS_PUSH_SWAP);
 		if (len == 3 && *a == largest)
-			ra(a, false);
+			ra(a, IS_PUSH_SWAP);
 		else if (len == 3 && (*a)->next == largest)
-			rra(a, false);
+			rra(a, IS_PUSH_SWAP);
 		if (len == 3 && (*a)->num > (*a)->next->num)
-			sa(a, false);
+			sa(a, IS_PUSH_SWAP);
 	}
 }
 
 void	sort_stack(t_stack **a, t_stack **b)
 {
+	int	size;
+
+	size = stack_size(*a);
+	if (size <= 3)
+	{
+		sort_three(a, size);
+		return ;
+	}
+	if (size > 5)
+		mark_lis(*a);
 	while (!stack_sorted(*a) && stack_size(*a) > 3 && stack_size(*b) < 2)
-		pb(b, a, false);
+		pb(b, a, IS_PUSH_SWAP);
 	while (!stack_sorted(*a) && stack_size(*a) > 3)
 		push_a_to_b(a, b);
-	sort_small(a, stack_size(*a));
+	sort_three(a, stack_size(*a));
 	while (*b)
 		push_b_to_a(b, a);
 	stack_align(a);

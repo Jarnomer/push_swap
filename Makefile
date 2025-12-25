@@ -66,7 +66,7 @@ VLGFLAGS := --leak-check=full \
 # **************************************************************************** #
 
 SOURCES := main \
-		   chk_error \
+		   chk_valid \
 		   chk_split \
 		   cmd_push \
 		   cmd_swap \
@@ -76,8 +76,10 @@ SOURCES := main \
 		   sort_prep_b \
 		   sort_push \
 		   stack_init \
+		   stack_lis \
 		   stack_sort \
-		   stack_util
+		   stack_util \
+		   utilities
 
 SOURCES_BONUS := $(BONUSBIN) \
                  $(filter-out main, $(SOURCES))

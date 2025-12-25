@@ -18,7 +18,7 @@ static void	rotate(t_stack **s)
 
 	if (!s || !*s || !(*s)->next)
 		return ;
-	bottom = (t_stack *)ft_lstlast((t_list *)*s);
+	bottom = stack_last(*s);
 	bottom->next = *s;
 	*s = (*s)->next;
 	(*s)->prev = NULL;

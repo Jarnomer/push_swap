@@ -24,11 +24,11 @@ int	main(int argc, char **argv)
 	else if (argc == 2 && *argv[1])
 		split_argv(argc, argv[1], &a);
 	else if ((argc == 2 && !*argv[1])
-		|| is_invalid_input(argc, argv, false)
-		|| stack_init(argc, argv, &a, false) == -1)
-		error_occured(&a);
+		|| is_invalid_input(argc, argv, NOT_SPLITTED)
+		|| stack_init(argc, argv, &a, NOT_SPLITTED))
+		error_exit(&a);
 	if (!stack_sorted(a))
 		sort_stack(&a, &b);
-	ft_lstclear((t_list **)&a, NULL);
+	stack_clear(&a);
 	return (EXIT_SUCCESS);
 }

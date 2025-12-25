@@ -12,7 +12,7 @@
 
 #include <push_swap.h>
 
-static long	custom_atol(const char *str)
+static long	ft_atol(const char *str)
 {
 	long	num;
 	long	sign;
@@ -39,19 +39,19 @@ int	stack_init(int argc, char **argv, t_stack **s, bool splitted)
 	int		i;
 
 	i = 0;
-	if (splitted)
-		--i;
+	if (splitted == true)
+		i -= 1;
 	while (++i < argc)
 	{
-		num = custom_atol(argv[i]);
+		num = ft_atol(argv[i]);
 		if (num == LONG_MAX || is_duplicate_number(*s, (int)num))
-			return (-1);
+			return (1);
 		new = ft_calloc(1, sizeof(t_stack));
 		if (!new)
-			return (-1);
-		new->prev = (t_stack *)ft_lstlast((t_list *)*s);
-		ft_lstadd_back((t_list **)s, (t_list *)new);
+			return (1);
 		new->num = (int)num;
+		new->prev = stack_last(*s);
+		stack_add(s, new);
 	}
 	return (0);
 }

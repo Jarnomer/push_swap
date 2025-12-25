@@ -15,40 +15,40 @@
 static void	self_destruct(t_stack **a, t_stack **b, char **cmd)
 {
 	ft_free_single((void **)cmd);
-	ft_lstclear((t_list **)a, NULL);
-	ft_lstclear((t_list **)b, NULL);
+	stack_clear(a);
+	stack_clear(b);
 }
 
 static void	exit_failure(t_stack **a, t_stack **b, char **cmd)
 {
 	self_destruct(a, b, cmd);
-	error_occured(a);
+	error_exit(a);
 }
 
 static void	trigger_command(t_stack **a, t_stack **b, char *cmd)
 {
 	if (!ft_strcmp(cmd, "pa\n"))
-		pa(a, b, true);
+		pa(a, b, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "pb\n"))
-		pb(b, a, true);
+		pb(b, a, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "sa\n"))
-		sa(a, true);
+		sa(a, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "sb\n"))
-		sb(b, true);
+		sb(b, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "ss\n"))
-		ss(a, b, true);
+		ss(a, b, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "rra\n"))
-		rra(a, true);
+		rra(a, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "rrb\n"))
-		rrb(b, true);
+		rrb(b, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "rrr\n"))
-		rrr(a, b, true);
+		rrr(a, b, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "ra\n"))
-		ra(a, true);
+		ra(a, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "rb\n"))
-		rb(b, true);
+		rb(b, IS_CHECKER);
 	else if (!ft_strcmp(cmd, "rr\n"))
-		rr(a, b, true);
+		rr(a, b, IS_CHECKER);
 	else
 		exit_failure(a, b, &cmd);
 }
@@ -61,8 +61,8 @@ static void	build_stack(int argc, char **argv, t_stack **a)
 		split_argv(argc, argv[1], a);
 	else if ((argc == 2 && !*argv[1])
 		|| is_invalid_input(argc, argv, false)
-		|| stack_init(argc, argv, a, false) == -1)
-		error_occured(a);
+		|| stack_init(argc, argv, a, false))
+		error_exit(a);
 }
 
 int	main(int argc, char **argv)

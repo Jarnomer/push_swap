@@ -16,16 +16,16 @@ static void	mix_rotate(t_stack **a, t_stack **b, t_stack *deal)
 {
 	if ((*a)->num != deal->num && deal->is_above)
 		while ((*a)->num != deal->num)
-			ra(a, false);
+			ra(a, IS_PUSH_SWAP);
 	if ((*a)->num != deal->num && !deal->is_above)
 		while ((*a)->num != deal->num)
-			rra(a, false);
+			rra(a, IS_PUSH_SWAP);
 	if ((*b)->num != deal->target->num && deal->target->is_above)
 		while ((*b)->num != deal->target->num)
-			rb(b, false);
+			rb(b, IS_PUSH_SWAP);
 	if ((*b)->num != deal->target->num && !deal->target->is_above)
 		while ((*b)->num != deal->target->num)
-			rrb(b, false);
+			rrb(b, IS_PUSH_SWAP);
 }
 
 static t_stack	*get_deal(t_stack *a)
@@ -48,21 +48,21 @@ void	sort_push_a(t_stack **a, t_stack **b)
 	deal = get_deal(*a);
 	if (deal->is_above && deal->target->is_above)
 		while ((*a)->num != deal->num && (*b)->num != deal->target->num)
-			rr(a, b, false);
+			rr(a, b, IS_PUSH_SWAP);
 	else if (!deal->is_above && !deal->target->is_above)
 		while ((*a)->num != deal->num && (*b)->num != deal->target->num)
-			rrr(a, b, false);
+			rrr(a, b, IS_PUSH_SWAP);
 	mix_rotate(a, b, deal);
-	pb(b, a, false);
+	pb(b, a, IS_PUSH_SWAP);
 }
 
 void	sort_push_b(t_stack **b, t_stack **a)
 {
 	if ((*b)->target->is_above)
 		while ((*a)->num != (*b)->target->num)
-			ra(a, false);
+			ra(a, IS_PUSH_SWAP);
 	if (!(*b)->target->is_above)
 		while ((*b)->target->num != (*a)->num)
-			rra(a, false);
-	pa(a, b, false);
+			rra(a, IS_PUSH_SWAP);
+	pa(a, b, IS_PUSH_SWAP);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   stack_util.c                                       :+:      :+:    :+:   */
+/*   utilities.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jmertane <jmertane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,49 @@
 
 #include <push_swap.h>
 
-bool	stack_sorted(t_stack *s)
+void	error_exit(t_stack **a)
 {
+	stack_clear(a);
+	ft_putendl_fd("Error", STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
+
+t_stack	*find_smallest(t_stack *s)
+{
+	t_stack	*lowest;
+	int		min;
+
 	if (!s)
-		return (true);
-	while (s->next)
+		return (NULL);
+	min = INT_MAX;
+	while (s)
 	{
-		if (s->num > s->next->num)
-			return (false);
+		if (s->num < min)
+		{
+			min = s->num;
+			lowest = s;
+		}
 		s = s->next;
 	}
-	return (true);
+	return (lowest);
 }
 
-int	stack_size(t_stack *s)
+t_stack	*find_largest(t_stack *s)
 {
-	return (ft_lstsize((t_list *)s));
-}
+	t_stack	*largest;
+	int		max;
 
-t_stack	*stack_last(t_stack *s)
-{
-	return ((t_stack *)ft_lstlast((t_list *)s));
-}
-
-void	stack_add(t_stack **s, t_stack *new)
-{
-	ft_lstadd_back((t_list **)s, (t_list *)new);
-}
-
-void	stack_clear(t_stack **s)
-{
-	ft_lstclear((t_list **)s, NULL);
+	if (!s)
+		return (NULL);
+	max = INT_MIN;
+	while (s)
+	{
+		if (s->num > max)
+		{
+			max = s->num;
+			largest = s;
+		}
+		s = s->next;
+	}
+	return (largest);
 }

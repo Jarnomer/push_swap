@@ -15,6 +15,12 @@
 
 # include <libft.h>
 
+# define IS_CHECKER    true
+# define IS_PUSH_SWAP  false
+
+# define IS_SPLITTED   true
+# define NOT_SPLITTED  false
+
 /* ************************************************************************** */
 /*																			  */
 /*								STACK NODE									  */
@@ -28,6 +34,7 @@
 /* 	size:			total size of the stack									  */
 /* 	is_above:		index is above median? [y/n]							  */
 /* 	is_deal:		push this node to other stack? [y/n]					  */
+/* 	is_lis:		    node is part of longest increasing subsequence? [y/n]     */
 /*																			  */
 /* ************************************************************************** */
 
@@ -42,6 +49,7 @@ typedef struct s_stack
 	int				size;
 	bool			is_above;
 	bool			is_deal;
+	bool			is_lis;
 }	t_stack;
 
 /* ************************************************************************** */
@@ -60,6 +68,7 @@ void	sort_prep_a(t_stack *a, t_stack *b);
 void	sort_push_a(t_stack **a, t_stack **b);
 void	sort_prep_b(t_stack *b, t_stack *a);
 void	sort_push_b(t_stack **b, t_stack **a);
+void	mark_lis(t_stack *a);
 
 /* ************************************************************************** */
 /*                               COMMANDS                                     */
@@ -83,13 +92,16 @@ void	rrr(t_stack **a, t_stack **b, bool checker);
 
 bool	is_invalid_input(int argc, char **argv, bool splitted);
 bool	is_duplicate_number(t_stack *a, int num);
-void	error_occured(t_stack **a);
+void	error_exit(t_stack **a);
 
 /* ************************************************************************** */
 /*                             STACK UTILITIES                                */
 /* ************************************************************************** */
 
 bool	stack_sorted(t_stack *s);
+t_stack	*stack_last(t_stack *s);
+void	stack_add(t_stack **s, t_stack *new);
+void	stack_clear(t_stack **s);
 t_stack	*find_smallest(t_stack *s);
 t_stack	*find_largest(t_stack *s);
 int		stack_size(t_stack *s);

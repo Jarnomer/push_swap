@@ -15,7 +15,7 @@
 static void	exit_failure(void ***arr, t_stack **a)
 {
 	ft_free_double(arr);
-	error_occured(a);
+	error_exit(a);
 }
 
 static int	argv_count(char const *s, char c)
@@ -41,8 +41,8 @@ void	split_argv(int argc, char *argv, t_stack **a)
 
 	argc = argv_count(argv, ' ');
 	arr = ft_split(argv, ' ');
-	if (!arr || is_invalid_input(argc, arr, true)
-		|| stack_init(argc, arr, a, true) == -1)
+	if (!arr || is_invalid_input(argc, arr, IS_SPLITTED)
+		|| stack_init(argc, arr, a, IS_SPLITTED))
 		exit_failure((void ***)&arr, a);
 	ft_free_double((void ***)&arr);
 }

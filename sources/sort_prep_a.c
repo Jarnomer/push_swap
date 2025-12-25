@@ -10,14 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include <push_swap.h>
 
-static void	update_is_deal(t_stack *s)
+static void	update_deal(t_stack *s)
 {
 	t_stack	*bargain;
 	int		deal;
 
 	deal = INT_MAX;
+	bargain = NULL;
 	while (s)
 	{
 		if (s->cost < deal)
@@ -27,21 +28,33 @@ static void	update_is_deal(t_stack *s)
 		}
 		s = s->next;
 	}
-	bargain->is_deal = true;
+	if (bargain)
+		bargain->is_deal = true;
 }
 
 static void	update_cost(t_stack *a)
 {
+	int	ca;
+	int	cb;
+
 	while (a)
 	{
 		if (a->is_above)
-			a->cost = a->index;
+			ca = a->index;
 		else
-			a->cost = a->size - a->index;
+			ca = a->size - a->index;
 		if (a->target->is_above)
-			a->cost += a->target->index;
+			cb = a->target->index;
 		else
-			a->cost += a->target->size - a->target->index;
+			cb = a->target->size - a->target->index;
+		if (a->is_above != a->target->is_above)
+			a->cost = ca + cb;
+		else if (ca > cb)
+			a->cost = ca;
+		else
+			a->cost = cb;
+		if (a->is_lis)
+			a->cost += 10000;
 		a = a->next;
 	}
 }
@@ -82,6 +95,7 @@ static void	prepare_stack(t_stack *s, int size)
 	{
 		s->index = i;
 		s->size = size;
+		s->is_deal = false;
 		if (i++ <= size / 2)
 			s->is_above = true;
 		else
@@ -96,5 +110,5 @@ void	sort_prep_a(t_stack *a, t_stack *b)
 	prepare_stack(b, stack_size(b));
 	update_target(a, b);
 	update_cost(a);
-	update_is_deal(a);
+	update_deal(a);
 }

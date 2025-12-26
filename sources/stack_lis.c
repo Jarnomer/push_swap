@@ -23,8 +23,9 @@ static int	*stack_to_array(t_stack *s, int size)
 	i = 0;
 	while (s)
 	{
-		arr[i++] = s->num;
+		arr[i] = s->num;
 		s = s->next;
+		i++;
 	}
 	return (arr);
 }
@@ -38,14 +39,18 @@ static int	*compute_lis_dp(int *arr, int size)
 	dp = malloc(sizeof(int) * size);
 	if (!dp)
 		return (NULL);
-	i = -1;
-	while (++i < size)
+	i = 0;
+	while (i < size)
 	{
 		dp[i] = 1;
-		j = -1;
-		while (++j < i)
+		j = 0;
+		while (j < i)
+		{
 			if (arr[j] < arr[i] && dp[j] + 1 > dp[i])
 				dp[i] = dp[j] + 1;
+			j++;
+		}
+		i++;
 	}
 	return (dp);
 }
@@ -56,10 +61,13 @@ static int	find_lis_end_idx(int *dp, int size)
 	int	i;
 
 	max_idx = 0;
-	i = 0;
-	while (++i < size)
+	i = 1;
+	while (i < size)
+	{
 		if (dp[i] > dp[max_idx])
 			max_idx = i;
+		i++;
+	}
 	return (max_idx);
 }
 
@@ -68,6 +76,7 @@ static void	mark_lis_nodes(t_stack *s, int *arr, int *dp, int end)
 	t_stack	*node;
 	int		lis_len;
 	int		prev_val;
+	int		idx;
 	int		i;
 
 	lis_len = dp[end];
@@ -78,8 +87,12 @@ static void	mark_lis_nodes(t_stack *s, int *arr, int *dp, int end)
 		if (dp[i] == lis_len && arr[i] < prev_val)
 		{
 			node = s;
-			while (node && node->num != arr[i])
+			idx = 0;
+			while (node && idx < i)
+			{
 				node = node->next;
+				idx++;
+			}
 			if (node)
 				node->is_lis = true;
 			prev_val = arr[i];
